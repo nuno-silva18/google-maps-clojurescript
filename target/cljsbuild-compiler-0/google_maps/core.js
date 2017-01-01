@@ -8,22 +8,26 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
 google_maps.core.home_did_mount = (function google_maps$core$home_did_mount(this$){
 var map_canvas = reagent.core.dom_node(this$);
 var map_coordinates = (new google.maps.LatLng(25.033,121.565));
-var map_options = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$center,map_coordinates,cljs.core.cst$kw$zoom,(18)], null));
+var map_options = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$center,map_coordinates,cljs.core.cst$kw$zoom,(15)], null));
 var map = (new google.maps.Map(map_canvas,map_options));
 var map_marker_options = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$position,map_coordinates,cljs.core.cst$kw$map,map,cljs.core.cst$kw$title,"Host location"], null));
 var map_marker = (new google.maps.Marker(map_marker_options));
+var map_circle_options = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 7, [cljs.core.cst$kw$map,map,cljs.core.cst$kw$radius,(500),cljs.core.cst$kw$fillColor,"#89CFF0",cljs.core.cst$kw$fillOpacity,0.35,cljs.core.cst$kw$strokeColor,"#89CFF0",cljs.core.cst$kw$strokeOpacity,0.8,cljs.core.cst$kw$strokeWeight,(2)], null));
+var map_circle = (new google.maps.Circle(map_circle_options));
+map_circle.bindTo("center",map_marker,"position");
+
 return map;
 });
 google_maps.core.home = (function google_maps$core$home(){
 return reagent.core.create_class(new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$reagent_DASH_render,google_maps.core.home_render,cljs.core.cst$kw$component_DASH_did_DASH_mount,google_maps.core.home_did_mount], null));
 });
 google_maps.core.geolocate_resolver = (function google_maps$core$geolocate_resolver(results,status){
-var lat_11190 = ((((results[(0)])["geometry"])["location"])["lat"]).call(null);
-var lng_11191 = ((((results[(0)])["geometry"])["location"])["lng"]).call(null);
-var address_coord_11192 = cljs.core.PersistentHashMap.fromArrays([cljs.core.cst$kw$lat,cljs.core.cst$kw$lng],[lat_11190,lng_11191]);
-alert(lat_11190);
+var lat_7560 = ((((results[(0)])["geometry"])["location"])["lat"]).call(null);
+var lng_7561 = ((((results[(0)])["geometry"])["location"])["lng"]).call(null);
+var address_coord_7562 = cljs.core.PersistentHashMap.fromArrays([cljs.core.cst$kw$lat,cljs.core.cst$kw$lng],[lat_7560,lng_7561]);
+alert(lat_7560);
 
-alert(lng_11191);
+alert(lng_7561);
 
 return alert("No results found!");
 });
@@ -56,8 +60,23 @@ return geocoder.geocode(latlng,google_maps.core.street_address_resolver);
 google_maps.core.geo_to_street = (function google_maps$core$geo_to_street(){
 return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h3,"Geolocation to street address"], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$input,new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$id,"geolat",cljs.core.cst$kw$placeholder,"Enter the latitude of the coordinates",cljs.core.cst$kw$type,"number"], null)], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$input,new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$id,"geoln",cljs.core.cst$kw$placeholder,"Enter the longitude of the coordinates",cljs.core.cst$kw$type,"number"], null)], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$button,new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$id,"geobutton",cljs.core.cst$kw$onClick,google_maps.core.streetlocate], null),"Check your coordinates' address!"], null)], null);
 });
+google_maps.core.autocomplete_field_render = (function google_maps$core$autocomplete_field_render(){
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h3,"Auto-complete to street address"], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$input,new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$id,"autocompletefield",cljs.core.cst$kw$placeholder,"Enter your address! I won't steal it, promise.",cljs.core.cst$kw$type,"text"], null)], null)], null);
+});
+google_maps.core.initialize = (function google_maps$core$initialize(){
+var address = document.getElementById("autocompletefield");
+var autocomplete = (new google.maps.places.Autocomplete(address));
+return null;
+});
+goog.exportSymbol('google_maps.core.initialize', google_maps.core.initialize);
+google_maps.core.autocomplete_field_did_mount = (function google_maps$core$autocomplete_field_did_mount(){
+return (new google.maps.event.addDomListener(window,"load",google_maps.core.initialize));
+});
+google_maps.core.autocomplete_field = (function google_maps$core$autocomplete_field(){
+return reagent.core.create_class(new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$reagent_DASH_render,google_maps.core.autocomplete_field_render,cljs.core.cst$kw$component_DASH_did_DASH_mount,google_maps.core.autocomplete_field_did_mount], null));
+});
 google_maps.core.homepage = (function google_maps$core$homepage(){
-return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h1,"Welcome to the Google Maps API homepage!"], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.home], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.street_to_geo], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.geo_to_street], null)], null);
+return new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h1,"Welcome to the Google Maps API homepage!"], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.home], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.street_to_geo], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.geo_to_street], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.autocomplete_field], null)], null);
 });
 google_maps.core.main = (function google_maps$core$main(){
 return reagent.core.render.cljs$core$IFn$_invoke$arity$2(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [google_maps.core.homepage], null),document.getElementById("app"));

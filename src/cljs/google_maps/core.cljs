@@ -11,12 +11,21 @@
   (let [map-canvas (reagent/dom-node this)
         map-coordinates (google.maps.LatLng. 25.033, 121.565)
         map-options (clj->js {:center map-coordinates
-                              :zoom 18})
+                              :zoom 15})
         map (js/google.maps.Map. map-canvas map-options)
         map-marker-options (clj->js {:position map-coordinates
                                      :map map
                                      :title "Host location"})
-        map-marker (js/google.maps.Marker. map-marker-options)]
+        map-marker (js/google.maps.Marker. map-marker-options)
+        map-circle-options (clj->js {:map map
+                                     :radius 500
+                                     :fillColor "#89CFF0"
+                                     :fillOpacity 0.35
+                                     :strokeColor "#89CFF0"
+                                     :strokeOpacity 0.8
+                                     :strokeWeight 2})
+        map-circle (js/google.maps.Circle. map-circle-options)]
+    (.bindTo map-circle "center" map-marker "position")
     map))
 
 (defn home []
@@ -40,6 +49,7 @@
       (.geocode geocoder address geolocate-resolver)))
 
 
+
 (defn street-to-geo []
   [:div
    [:h3 "Street address to geolocation"]
@@ -60,9 +70,9 @@
 
 
 (defn streetlocate []
-  (let [geocoder (google.maps.Geocoder.)
-        latlng-google (google.maps.LatLng. (.-value (.getElementById js/document "geolat")),
-                                           (.-value (.getElementById js/document "geoln")))
+  (let [geocoder (js/google.maps.Geocoder.)
+        latlng-google (js/google.maps.LatLng. (.-value (.getElementById js/document "geolat")),
+                                              (.-value (.getElementById js/document "geoln")))
         latlng (clj->js {:latLng latlng-google})]
     (js/console.log latlng)
     (.geocode geocoder latlng street-address-resolver)))
@@ -81,6 +91,28 @@
              :onClick streetlocate}
     "Check your coordinates' address!"]])
 
+;; Auto-complete the address using Google Map's API AutoComplete object
+
+(defn autocomplete-field-render []
+  [:div
+   [:h3 "Auto-complete to street address"]
+   [:input {:id "autocompletefield"
+            :placeholder "Enter your address! I won't steal it, promise."
+            :type "text"}]])
+
+(defn ^:export initialize []
+  (let [address (.getElementById js/document "autocompletefield")
+        autocomplete (js/google.maps.places.Autocomplete. address)]))
+
+
+(defn autocomplete-field-did-mount []
+    (js/google.maps.event.addDomListener. js/window "load" initialize))
+
+
+(defn autocomplete-field []
+  (reagent/create-class {:reagent-render autocomplete-field-render
+                         :component-did-mount autocomplete-field-did-mount}))
+
 ; Homepage
 
 (defn homepage []
@@ -88,8 +120,8 @@
    [:h1 "Welcome to the Google Maps API homepage!"]
    [home]
    [street-to-geo]
-   [geo-to-street]])
-
+   [geo-to-street]
+   [autocomplete-field]])
 
 (defn ^:export main []
   (reagent/render [homepage]
