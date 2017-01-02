@@ -22,14 +22,16 @@ google_maps.core.home = (function google_maps$core$home(){
 return reagent.core.create_class(new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$reagent_DASH_render,google_maps.core.home_render,cljs.core.cst$kw$component_DASH_did_DASH_mount,google_maps.core.home_did_mount], null));
 });
 google_maps.core.geolocate_resolver = (function google_maps$core$geolocate_resolver(results,status){
-var lat_7560 = ((((results[(0)])["geometry"])["location"])["lat"]).call(null);
-var lng_7561 = ((((results[(0)])["geometry"])["location"])["lng"]).call(null);
-var address_coord_7562 = cljs.core.PersistentHashMap.fromArrays([cljs.core.cst$kw$lat,cljs.core.cst$kw$lng],[lat_7560,lng_7561]);
-alert(lat_7560);
+if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("OK",status)){
+var lat = ((((results[(0)])["geometry"])["location"])["lat"]).call(null);
+var lng = ((((results[(0)])["geometry"])["location"])["lng"]).call(null);
+var address_coord = cljs.core.PersistentHashMap.fromArrays([cljs.core.cst$kw$lat,cljs.core.cst$kw$lng],[lat,lng]);
+alert(lat);
 
-alert(lng_7561);
-
+return alert(lng);
+} else {
 return alert("No results found!");
+}
 });
 goog.exportSymbol('google_maps.core.geolocate_resolver', google_maps.core.geolocate_resolver);
 google_maps.core.geolocate = (function google_maps$core$geolocate(){
@@ -38,7 +40,7 @@ var address = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 1, [cl
 return geocoder.geocode(address,google_maps.core.geolocate_resolver);
 });
 google_maps.core.street_to_geo = (function google_maps$core$street_to_geo(){
-return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h3,"Street address to geolocation"], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$input,new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$id,"addressac",cljs.core.cst$kw$placeholder,"Enter your address",cljs.core.cst$kw$type,"text"], null)], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$button,new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$id,"addressbutton",cljs.core.cst$kw$onClick,google_maps.core.geolocate], null),"Check your addresse's coordinates!"], null)], null);
+return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$h3,"Street address to geolocation"], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$input,new cljs.core.PersistentArrayMap(null, 3, [cljs.core.cst$kw$id,"addressac",cljs.core.cst$kw$placeholder,"Enter your address",cljs.core.cst$kw$type,"text"], null)], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$button,new cljs.core.PersistentArrayMap(null, 2, [cljs.core.cst$kw$id,"addressbutton",cljs.core.cst$kw$onClick,google_maps.core.geolocate], null),"Check your address's coordinates!"], null)], null);
 });
 google_maps.core.street_address_resolver = (function google_maps$core$street_address_resolver(results,status){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("OK",status)){

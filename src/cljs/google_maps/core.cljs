@@ -35,12 +35,13 @@
 ; Geolocation conversion to a street address component
 
 (defn ^:export geolocate-resolver [results status]
-    (let [lat ((aget (aget (aget (aget results 0) "geometry") "location") "lat"))
-          lng ((aget (aget (aget (aget results 0) "geometry") "location") "lng"))
-          address-coord (hash-map :lat lat, :lng lng)] ; In case an object is needed
-      (js/alert lat)
-      (js/alert lng))
-    (js/alert "No results found!"))
+    (if (= "OK" status)
+      (let [lat ((aget (aget (aget (aget results 0) "geometry") "location") "lat"))
+            lng ((aget (aget (aget (aget results 0) "geometry") "location") "lng"))
+            address-coord (hash-map :lat lat, :lng lng)] ; In case an object is needed
+        (js/alert lat)
+        (js/alert lng))
+        (js/alert "No results found!")))
 
 
 (defn geolocate []
@@ -58,7 +59,7 @@
             :type "text"}]
    [:button {:id "addressbutton"
              :onClick geolocate}
-    "Check your addresse's coordinates!"]])
+    "Check your address's coordinates!"]])
 
 ; Street address conversion to a geolocation component
 
